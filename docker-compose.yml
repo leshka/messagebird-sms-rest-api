@@ -1,0 +1,20 @@
+version: "2.1"
+
+services:
+  app:
+    build:
+      context: docker/app
+    volumes:
+      - .:/var/www
+    env_file:
+      - .env.app
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    volumes_from:
+      - app
+    ports:
+      - ${WEB_EXPOSED_PORT}:80
+
